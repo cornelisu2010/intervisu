@@ -4,12 +4,12 @@
 \alias{Scatterplot_3d}
 \title{Interactive three-dimensional scatterlpot}
 \usage{
-Scatterplot_3d(data, n, height = c(800, 500))
+Scatterplot_3d(data, n, height = c(1500, 500))
 }
 \arguments{
 \item{data}{A data.frame object that is to be analyzed (only metric variables are shown)}
 
-\item{n}{A numeric value indicating from what number of different values a variable is seen as categorical variables, all variables that have more different values than n are being treated as metric values}
+\item{n}{A numeric value indicating the limit from what number of different values a variable is seen as categorical variable, all variables that have more than n different values are being treated as metric values}
 
 \item{height}{A two-dimensional numeric vector indicating the height of the shown three-dimensional and two-dimensional scatterplots}
 }
@@ -17,12 +17,12 @@ Scatterplot_3d(data, n, height = c(800, 500))
 Takes any metric data and plots a three-dimensional scatterplot and a two-dimensional scatterplot.
 }
 \details{
-This function produces an application that lets you plot a three-dimensional scatterplot, you can decide what metric variables should be plotted. Next to the
-three-dimensional scatterplot there is a two-dimensional scatterplot of the first two dimensions of the three-dimensional scatterplot (1.Variable and 2. Variable). With
-a slide you can set the angle of the plot, there is also a dynamic dimension to this slider. You can press the little 'Play'-Button and it will automatically rotate the plot once.
-You can also plot vertical lines for each point in the plot by pressing the button named 'Draw vertical lines'. Another feature of this application is the conditional mode, which lets you
-condition both plots on a fourth variable. To enter this mode press the button called 'Condition plot only values conditioned on the value of a fourth variable. You set value for the fourth variable with a slider
-and only 30% of the data around that value is plotted.
+This function produces an application that lets you plot a interactive three-dimensional scatterplot, you can decide what metric variables should be plotted. Next to the
+three-dimensional scatterplot there is a two-dimensional scatterplot of the first two dimensions of the three-dimensional scatterplot (1.Variable and 2. Variable). You can change the plotted angle
+interactively by clicking and brushing over the shown three-dimensional scatterplot with the cursor. You can press the little 'Play'-Button and it will automatically rotate the plot once.
+There is also a feature added in this application, which lets you
+condition both plots on a fourth variable. To enter this mode press the button called 'Condition plot only values conditioned on the value of a fourth variable. You can now set a value for the fourth variable with a slider.
+Only 30% of the data around that value will now be plotted.
 }
 \examples{
 if (interactive()) {

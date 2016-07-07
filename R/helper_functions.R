@@ -77,7 +77,7 @@ round_check= function(x) {
 
 #' Help-Function
 #'
-#' This function checks if a a vector of packages are installed. Every package that is installed will be loaded and all not yet
+#' This function checks if a a vector of packages named each as a string are installed. Every package that is installed will be loaded and all not yet
 #' installed packages will be installed and loaded.
 #'
 #' @param packages A vector of packages
@@ -105,26 +105,6 @@ check_package = function(packages) {
 }
 
 
-
-#' Help-Function
-#'
-#' This function is used in the boxplot application to find out onto what boxplot a used clicked.
-#'
-#' @param x A numeric value (the x value of the point where the user clicked)
-#' @param n A numeric value (how many boxplots are there)
-#' @author Cornelius Fritz <cornelius.fritz@campus.lmu.de>
-#' @export
-#'
-
-position2=function(x, n) {
-  for(i in 1: n) {
-    if(abs(x-i)<=0.4) {
-      return(i)
-    }
-  }
-  return(NA)
-}
-
 #' Help-Function
 #'
 #' This function melts two factor levels into one factor level.
@@ -151,21 +131,6 @@ factor_melt= function(factor_leveln1, factor_leveln2, factor1) { #n1 wird mit n2
   return(factor2)
 }
 
-#' Help-Function
-#'
-#' This function is used in the Metric_Single_Variable_Analysis-function to make sure
-#' that you always have a bit more freedom with decision what data to plot that what data to actually use.
-#'
-#' @param variable A numeric vector
-#' @param a How much more freedom do you need with the plot-limits? The lower the more freedomn
-#' @author Cornelius Fritz <cornelius.fritz@campus.lmu.de>
-#' @export
-#'
-
-fraction_variable = function(variable,a=100) {
-  span= summary(variable)[6]-summary(variable)[1]
-  return(span/a)
-}
 
 #' Help-Function
 #'
@@ -187,105 +152,7 @@ factor_check=function(data){
 
 #' Help-Function
 #'
-#' This function returns a subpopulation of the given data that lies around a given value of a given variable
-#'
-#' @param data The data to be analysed
-#' @param var The variable upon the subpopulation should depend on
-#' @param value The value of the given variable
-#' @param prob What percentage of the data over and under the given limit should be returned (default is 0.15)
-#' @author Cornelius Fritz <cornelius.fritz@campus.lmu.de>
-#' @export
-#'
-
-data_cut= function(data, var,value, prob=0.15) {
-  b=value
-  d=c()
-  for(i in seq(0,1,by=0.001)){
-    c=quantile(var,probs = i)
-    if(abs(b-c)<0.1) {
-      d=i
-    }
-  }
-  if(length(d)==0) {
-    return(data)
-  }
-  if(d+prob>=1){
-    a=c(quantile(var,probs =d-prob),max(var))
-  } else if(d-prob<=0){
-    a=c(min(var),quantile(var,probs =d+prob))
-  } else {
-    a=quantile(var,probs = c(d-prob,d+prob))
-  }
-
-  data=data[(var<a[2])&(var>a[1]),]
-  return(data)
-}
-
-#' Help-Function
-#'
-#' This function is used in the Stacked_Barplot application to find out onto what barplot a used clicked.
-#'
-#' @param x A numeric value (the x value of the point where the user clicked)
-#' @author Cornelius Fritz <cornelius.fritz@campus.lmu.de>
-#' @export
-#'
-position3= function(x){
-  return(ceiling((x)/1.2 -0.1))
-}
-
-
-#' Help-Function
-#'
-#' This function is used in the Stacked_Barplot application and transforms a given table so that one can specify the colour in the barplot.
-#'
-#' @param table Table to be transformed
-#' @param click The number of the level the used clicked on in the application
-#' @author Cornelius Fritz <cornelius.fritz@campus.lmu.de>
-#' @export
-#'
-
-table_transform= function(table,click){
-  table_new=matrix(ncol=dim(table)[2], nrow=dim(table)[1]*2)
-  colnames(table_new)=colnames(table)
-  rownames(table_new)=c(rownames(table), seq(100,101,length.out = dim(table)[1]))
-  for(i in 1: nrow(table)) {
-    for(j in 1: ncol(table)) {
-      if(j!=click) {
-        table_new[i,j]=table[i,j]
-      }
-    }
-  }
-  table_new[,click]=c(rep(0,dim(table)[1]),table[,click])
-  return(as.table( table_new))
-}
-
-
-
-#' Help-Function
-#'
-#' This function calculates onto what scatterplot in the scatterplot-matrix the user clicked. (Function used in the function Scatterplot_Matrix)
-#'
-#' @param data The data to be analysed
-#' @param x the x-value of the click
-#' @param y the y-value of the click
-#' @author Cornelius Fritz <cornelius.fritz@campus.lmu.de>
-#' @export
-#'
-
-position= function(x,y,data) {
-  count=ncol(data)
-  Ergebnis=list(c(),c())
-  for ( i in 1:count) {
-    if(x>(i*(1/count))) {Ergebnis[[1]][i]=TRUE} else {Ergebnis[[1]][i]=FALSE}
-    if(y>(i*(1/count))) {Ergebnis[[2]][i]=TRUE} else {Ergebnis[[2]][i]=FALSE}
-  }
-  return(c(sum(Ergebnis[[1]])+1, count-sum(Ergebnis[[2]])))
-}
-
-
-#' Help-Function
-#'
-#' This function turns all factorial variable in a dataset into metric variables and returns a logical vector what variable were factor-variables.
+#' This function turns all factorial variables in a dataset into metric variables and returns a logical vector what variable were factor-variables.
 #'
 #' @param data The data to be analysed
 #' @author Cornelius Fritz <cornelius.fritz@campus.lmu.de>

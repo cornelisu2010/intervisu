@@ -3,12 +3,12 @@
 #' Takes any metric data and plots different boxplots conditioned on a factorial variable.
 #'
 #' @param data A data.frame object that is to be analyzed (only metric variables are shown)
-#' @param n A numeric value indicating from what number of different values a variable is seen as categorical variable, all variables that have more different values than n are being treated as metric values
+#' @param n A numeric value indicating the limit from what number of different values a variable is seen as categorical variable, all variables that have more than n different values are being treated as metric values
 #' @param height A numeric value indicating the height of the shown boxplot
 #' @param width A numeric value indicating the width of the shown boxplot
 #' @author Cornelius Fritz <cornelius.fritz@campus.lmu.de>
 #' @example demo/demo5.R
-#' @details A grouped boxplot is plotted, you can decide what metric variable is plotted and according to what factorial variable the boxplot is grouped. You can also change the groups of the factorial variable.
+#' @details A grouped boxplot is plotted, you can decide what metric variable is plotted and according to what factorial variable the boxplot is grouped. You can also interactively melt levels of the factorial variable together.
 #' In order to do this you at first need to select one level of the factorial variable by clicking on it with a single-click. The chosen boxplot will be highlighted. The other level that you want to melt together with the first one
 #' is identified by a double-click. Once you clicked on one level with a single-click and on one level with a double-click, those two levels are melted into one level. The
 #' labels on the x-axis are changed accordingly. You can always return to the older version of the factorial variable (with one more level than the current) by pressing the return button.
@@ -19,7 +19,14 @@
 
 
 Group_Boxplot = function(data, n=10,width=600, height=600) {
-
+  position2=function(x, n) {
+    for(i in 1: n) {
+      if(abs(x-i)<=0.4) {
+        return(i)
+      }
+    }
+    return(NA)
+  }
   data=faktor2(data,n)[[1]]
   vec=faktor2(data,n)[[2]]
 

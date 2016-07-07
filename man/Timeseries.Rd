@@ -17,10 +17,8 @@ Timeseries(data, height = c(800, 400), n = 10)
 Takes any metric data with time series and plots a seasional decomposition by Loess.
 }
 \details{
-At first you can chose what metric variable should be composed into a seasonal, trend and remainder part. Then you can say from what year to what year the data was observed
-and the frequency of observations per year. For monthly observed data this parameter should be 12. You can also fit a robust fitting of the loess procedure by pressing the button
-called 'Robust fitting'. The default for the window of the seasonal loess window is periodic, meaning as long as one period. This means that the window is exactly as broad as one period
-number of the frequency in observations. If you brush over any part of the decomposition you see a zoom plot in the sidebar panel of the shaded area.
+At first you can chose what metric variable should be composed into a seasonal, trend and remainder part. Then you can choose from what year to what year the data was observed
+and the frequency of observations per year. For monthly observed data this parameter should be 12. The STL algorithm is set up in two loops, one inner loop If you brush over any part of the decomposition you see a zoom plot in the sidebar panel of the shaded area.
 }
 \examples{
 
@@ -38,5 +36,8 @@ if (interactive()) {
 }
 \author{
 Cornelius Fritz <cornelius.fritz@campus.lmu.de>
+}
+\references{
+R. B. Cleveland, W. S. Cleveland, J.E. McRae, and I. Terpenning (1990) STL: A Seasonal-Trend Decomposition Procedure Based on Loess. Journal of Official Statistics, 6.
 }
 

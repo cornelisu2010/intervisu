@@ -7,10 +7,12 @@
 #' @param height A two-dimensional numeric value indicating the height of the decomposition and the heigth of the zoom-graph
 #' @author Cornelius Fritz <cornelius.fritz@campus.lmu.de>
 #' @example demo/demo7.R
-#' @details At first you can chose what metric variable should be composed into a seasonal, trend and remainder part. Then you can say from what year to what year the data was observed
-#' and the frequency of observations per year. For monthly observed data this parameter should be 12. You can also fit a robust fitting of the loess procedure by pressing the button
-#' called 'Robust fitting'. The default for the window of the seasonal loess window is periodic, meaning as long as one period. This means that the window is exactly as broad as one period
-#' number of the frequency in observations. If you brush over any part of the decomposition you see a zoom plot in the sidebar panel of the shaded area.
+#' @details At first you can chose what metric variable should be composed into a seasonal, trend and remainder part. Then you can choose from what year to what year the data was observed
+#' and the frequency of observations per year. For monthly observed data this parameter should be 12. The STL algorithm is set up in two loops, one inner loop to update the seasonal and trend component and one to updated the robust weights of each oberservation.
+#' If you want to update any robust weights you can press the button "Robust Fitting". The bandwidth of the estimation used updating the seasonal component is usually the amount of observations in one period, but can also be set individually, if you don't press the
+#' "Periodicity of the Loess window for the Seasional Component".
+#' You can brush over any part of the decomposition and see a zoom plot in the sidebar panel of the shaded area.
+#' @references R. B. Cleveland, W. S. Cleveland, J.E. McRae, and I. Terpenning (1990) STL: A Seasonal-Trend Decomposition Procedure Based on Loess. Journal of Official Statistics, 6.
 #' @export
 #'
 
@@ -47,8 +49,8 @@ Timeseries = function(data,height=c(800,400),n=10) {
         ),
         numericInput("num3", label = "Frequency", value = 12),
         fluidRow(
-          column(6,checkboxInput("robust",label = "Robust fitting in the loess procedure",value = F)),
-          column(6,checkboxInput("periodic",label = "Should the window of the loess window for the seasional extraction be periodic?",value = T))
+          column(6,checkboxInput("robust",label = "Robust Fitting",value = F)),
+          column(6,checkboxInput("periodic",label = "Periodicity of the Loess window for the Seasional Component",value = T))
         ),conditionalPanel(
         condition = "input.periodic == false",
         numericInput("num4", label = "Span of the loess window", value = 10)

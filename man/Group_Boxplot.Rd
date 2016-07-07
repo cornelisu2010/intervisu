@@ -9,7 +9,7 @@ Group_Boxplot(data, n = 10, width = 600, height = 600)
 \arguments{
 \item{data}{A data.frame object that is to be analyzed (only metric variables are shown)}
 
-\item{n}{A numeric value indicating from what number of different values a variable is seen as categorical variable, all variables that have more different values than n are being treated as metric values}
+\item{n}{A numeric value indicating the limit from what number of different values a variable is seen as categorical variable, all variables that have more than n different values are being treated as metric values}
 
 \item{width}{A numeric value indicating the width of the shown boxplot}
 
@@ -19,7 +19,7 @@ Group_Boxplot(data, n = 10, width = 600, height = 600)
 Takes any metric data and plots different boxplots conditioned on a factorial variable.
 }
 \details{
-A grouped boxplot is plotted, you can decide what metric variable is plotted and according to what factorial variable the boxplot is grouped. You can also change the groups of the factorial variable.
+A grouped boxplot is plotted, you can decide what metric variable is plotted and according to what factorial variable the boxplot is grouped. You can also interactively melt levels of the factorial variable together.
 In order to do this you at first need to select one level of the factorial variable by clicking on it with a single-click. The chosen boxplot will be highlighted. The other level that you want to melt together with the first one
 is identified by a double-click. Once you clicked on one level with a single-click and on one level with a double-click, those two levels are melted into one level. The
 labels on the x-axis are changed accordingly. You can always return to the older version of the factorial variable (with one more level than the current) by pressing the return button.

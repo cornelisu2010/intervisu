@@ -8,18 +8,29 @@
 #' @param height A three-dimensional numeric value indicating the height of the three shown plots
 #' @author Cornelius Fritz <cornelius.fritz@campus.lmu.de>
 #' @example demo/demo1.R
-#' @details At first one has to choose the variables to be plotted in the scatterplot matrix.
-#' The user can zoom into two scatterplots a time. A conventional click on one scatterplot from the Scatterplot-Matrix triggers a bigger scatter plot on the left-hand side,
+#' @details At first one has to choose the variables to be plotted in the scatterplot matrix. Once the user has choosen at least two variables (the minimum of a scatterplot),
+#' those two plots are also shown on each side of the Scatterplot-Matrix.
+#' The user though can decide what scatterplots out of the Matrix should be zoom in on each side. A conventional click on one scatterplot from the Scatterplot-Matrix triggers a bigger scatter plot on the left-hand side,
 #' while you can control the scatterplot on the right-hand side with a double click on the desired scatterplot in the Scatterplot-Matrix.
 #' On each of the small scatterplots one can select certain points with the brush option, implemented in the R-packge Shiny. Once you have chosen a cloud of data points
 #' and performed a normal click, the chosen points with be colored red in all available scatterplots. If you want to see the chosen data you have to
-#' press the "show data"-Button. A linear regression line and a loess curve can also be plotted by pressing the fitting button. In the case of a pressed "Regression"- or "Smooth"-Button
-#' you can also calculate the models by the groups you have chosen by coloring points with the brush-tool explained earlier.
+#' press the "show data"-Button. A linear regression line and a loess curve can also be plotted by pressing the fitting button. In the case of a pressed "Regression"- or "Smooth"-Button.
+#' If groups have been definied by brushing actions, you can also plot the linear and loess regression by group once you pressed the Button "By Group".
 #' @export
 #'
 
 
 Scatterplot_Matrix= function(data, metr_data=F,width=c(400,700,400), height=c(500,700,500)) {
+  position= function(x,y,data) {
+    count=ncol(data)
+    Ergebnis=list(c(),c())
+    for ( i in 1:count) {
+      if(x>(i*(1/count))) {Ergebnis[[1]][i]=TRUE} else {Ergebnis[[1]][i]=FALSE}
+      if(y>(i*(1/count))) {Ergebnis[[2]][i]=TRUE} else {Ergebnis[[2]][i]=FALSE}
+    }
+    return(c(sum(Ergebnis[[1]])+1, count-sum(Ergebnis[[2]])))
+  }
+
   faktor1=faktor(data)
   data1=data
   data=faktor1[[1]]
@@ -45,7 +56,7 @@ Scatterplot_Matrix= function(data, metr_data=F,width=c(400,700,400), height=c(50
       column(2, checkboxInput("data_show", label = "Show Data", value = F)),
       column(2, conditionalPanel(
         condition = "input.regression == true | input.smooth == true",
-        checkboxInput("bygroup", label = "By group", value = F)
+        checkboxInput("bygroup", label = "By Group", value = F)
       )),
       column(4,if(metr_data){
         dataTableOutput("metr")
@@ -396,7 +407,7 @@ Scatterplot_Matrix= function(data, metr_data=F,width=c(400,700,400), height=c(50
     output$dataset= renderDataTable({
 
       if(input$data_show) {
-        datatable(data1[!group$group,])
+        datatable(data[!group$group,])
       }
 
     })

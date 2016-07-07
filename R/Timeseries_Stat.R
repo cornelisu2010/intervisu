@@ -12,7 +12,7 @@
 #' @importFrom  scatterplot3d scatterplot3d
 #' @import car
 #' @import mgcv
-#' @importFrom DT datatable
+#' @importFrom "DT" "datatable"
 #' @import zoo
 #' @import splines
 #' @importFrom "tseries" "get.hist.quote"

@@ -20,13 +20,14 @@ Scatterplot_Matrix(data, metr_data = F, width = c(400, 700, 400),
 Takes any data and creates an interactive Scatterplot-Matrix with multiple features.
 }
 \details{
-At first one has to choose the variables to be plotted in the scatterplot matrix.
-The user can zoom into two scatterplots a time. A conventional click on one scatterplot from the Scatterplot-Matrix triggers a bigger scatter plot on the left-hand side,
+At first one has to choose the variables to be plotted in the scatterplot matrix. Once the user has choosen at least two variables (the minimum of a scatterplot),
+those two plots are also shown on each side of the Scatterplot-Matrix.
+The user though can decide what scatterplots out of the Matrix should be zoom in on each side. A conventional click on one scatterplot from the Scatterplot-Matrix triggers a bigger scatter plot on the left-hand side,
 while you can control the scatterplot on the right-hand side with a double click on the desired scatterplot in the Scatterplot-Matrix.
 On each of the small scatterplots one can select certain points with the brush option, implemented in the R-packge Shiny. Once you have chosen a cloud of data points
 and performed a normal click, the chosen points with be colored red in all available scatterplots. If you want to see the chosen data you have to
-press the "show data"-Button. A linear regression line and a loess curve can also be plotted by pressing the fitting button. In the case of a pressed "Regression"- or "Smooth"-Button
-you can also calculate the models by the groups you have chosen by coloring points with the brush-tool explained earlier.
+press the "show data"-Button. A linear regression line and a loess curve can also be plotted by pressing the fitting button. In the case of a pressed "Regression"- or "Smooth"-Button.
+If groups have been definied by brushing actions, you can also plot the linear and loess regression by group once you pressed the Button "By Group".
 }
 \examples{
 data=iris

@@ -1,21 +1,19 @@
 #' Interactive smoothing with two metric variables
 #'
-#' Takes any metric data and plots a two-dimensional scatterplot, you can fit a polynomial or smoothing spline with a confidence band.
+#' Takes any metric data and plots a two-dimensional scatterplot. You can interactively build a polynomial or smoothing spline fit and plot those fits with a confidence band.
 #'
 #' @param data A data.frame object that is to be analyzed (only metric variables are shown)
-#' @param n A numeric value indicating from what number of different values a variable is seen as categorical, all variables that have more different values than n are being treated as metric values
+#' @param n A numeric value indicating the limit from what number of different values a variable is seen as categorical variable, all variables that have more than n different values are being treated as metric values
 #' @param height A numeric value indicating the height of the shown scatterplot
 #' @author Cornelius Fritz <cornelius.fritz@campus.lmu.de>
 #' @example demo/demo3.R
-#' @details On the sidebar you can chose two metric variables from the data set to be plotted in a scatterplot. If you wish you can also transform any of the used variables (options are: identity, log, exp, sin,cos).
+#' @details On the sidebar you can chose two metric variables from the data set to be plotted in a scatterplot. If you wish you can also transform any of the used variables (options are: identity, log, exp, sin, cos).
 #' On the right side you see the R^2 values of the current model. To fit a polynomial model chose the 'Polynomial'-option in the type of regression.With a numeric input you can change the degree of the fit.
-#' Another option is to fit b-Splines, you can chose them as the type of regression. And with two numerical inputs you can set the degree and knots of the fit. The knots
-#' arguments setts the amount of splits in the data and the degree argument the degree of each of these splits. The last optional type of regression is smoothing.
-#' At first you can set the amount of knots and decide weather you want to penalize the fit. You can also use different kind of smoothing basis you want to use. There are four different possible smoothing bases:
-#' thing plate regression splines, cubic regression splines, p-splines and duchon splines.
-#' If you want to penalize the fit check the box 'Penalize', there are now two more variables
-#' that you can change. You can change the order of penalty and a value called lambda telling the model how important the penalty term should be (the higher the more important). Y
-#' You can also change the family and link-Function of the model. For further reading on these options see the documentation in the stats-Package (\code{\link{family}} and \code{\link{make.link}}).
+#' The other option is to fit "Polynomial-Splines", one can do that by selecting the according type of regression.
+#' At first you can set the amount of knots and decide weather you want to penalize the fit. You can also use different kind of smoothing basis you want to use. There are three different possible smoothing bases:
+#' thing plate regression splines, cubic regression splinesand p-splines.
+#' If you want to penalize the fit check the box 'Penalize', you can set the numeric value lambda, indicating the importance of the penalty term. In case you are fitting a p-Spline Basis without a penalty the model is equivalent to b-splines, so you can also set the order of the fit.
+#' The last thing you are also free to change is the family and link-Function used in the the model. For further reading on these options see the documentation in the stats-Package (\code{\link{family}} and \code{\link{make.link}}).
 #' @export
 #'
 #'

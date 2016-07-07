@@ -10,7 +10,7 @@ faktor(data)
 \item{data}{The data to be analysed}
 }
 \description{
-This function turns all factorial variable in a dataset into metric variables and returns a logical vector what variable were factor-variables.
+This function turns all factorial variables in a dataset into metric variables and returns a logical vector what variable were factor-variables.
 }
 \author{
 Cornelius Fritz <cornelius.fritz@campus.lmu.de>

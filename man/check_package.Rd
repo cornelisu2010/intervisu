@@ -10,7 +10,7 @@ check_package(packages)
 \item{packages}{A vector of packages}
 }
 \description{
-This function checks if a a vector of packages are installed. Every package that is installed will be loaded and all not yet
+This function checks if a a vector of packages named each as a string are installed. Every package that is installed will be loaded and all not yet
 installed packages will be installed and loaded.
 }
 \author{
