@@ -5,6 +5,9 @@ The functions are part of my bachelors thesis about interactive data visualistio
 Install the package with the following code.
 
 install.packages("devtools")
+
 library(devtools)
+
 install_github("corneliusfritz/intervisu")
+
 library(intervisu)
