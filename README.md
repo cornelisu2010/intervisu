@@ -7,6 +7,6 @@ Install the package with the following code.
 ```R
 install.packages("devtools")
 library(devtools)
-install_github("corneliusfritz/intervisu",force=T,ref = "intervisu")
+install_github("corneliusfritz/intervisu",force=T,ref = "inter")
 library(intervisu)
 ```
