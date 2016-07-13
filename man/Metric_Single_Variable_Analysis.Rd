@@ -8,9 +8,9 @@ Metric_Single_Variable_Analysis(data, n = 10, a = 50, width = 700,
   height = 700)
 }
 \arguments{
-\item{data}{A data.frame object that is to be analyzed (only metric variables will be shown)}
+\item{data}{A data.frame object that is to be analyzed (only metric variables will be used in this application)}
 
-\item{n}{A numeric value indicating from what number of different values a variable is seen as categorical variables, all variables that have more different values than n are being treated as metric values}
+\item{n}{A numeric value indicating the limit from what number of different values a variable is seen as categorical variable, all variables that have more than n different values are being treated as metric values}
 
 \item{a}{A numeric value indicating how much freedom the slider telling the boxplot what xlim values should be allowed should have}
 
@@ -19,8 +19,8 @@ Metric_Single_Variable_Analysis(data, n = 10, a = 50, width = 700,
 \item{height}{A numeric value indicating the height of the shown plot}
 }
 \description{
-With this application you can graphically view a single metric variable. From a given data-set you can plots boxplots, density-estimations and histograms with many interactive elements. If you
-want to reproduce the same graph you built in the app, you can get the code for the desired representation by clicking the 'Show R Code'-Button.
+With this application you can graphically analyse a single metric variable. From a given data-set you can plots boxplots, density-estimations and histograms, each with many interactive elements. If you
+want to reproduce the same graph you built in the app, you can always get the code for the desired representation by clicking the 'Show R Code'-Button.
 }
 \details{
 There are several interactive elements to each interactive data visualizations. If you want to plot a \strong{boxplot} you can at first decide what metric variable
@@ -33,7 +33,7 @@ Plotting a \strong{density estimator} also gives you many different possibilitie
 With two numeric inputs you can decide from what value to what value the slider input for the chosen bandwidth should be shown. You can also just plot only the observed
 values of a variable that lie within a given range (with a slider you can decide what values should be used).
 
-The last graphical representation is a \strong{histogram} of the relative frequency. With a numeric input you can set the upper limit of the y-axis.
+The last optional graphical representation is a \strong{histogram} of the relative frequency. With a numeric input you can set the upper limit of the y-axis.
 You can also change the origin of the histogram. The origin of a histogram is where the first block of the histogram starts, and to plot all optional values it can't be greater than
 the smallest observed value. The last interactive parameter is the used bandwidth in the plot, this is the absolute length of each single bars in the histogram.
 }

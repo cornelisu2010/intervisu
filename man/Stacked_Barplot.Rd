@@ -2,32 +2,34 @@
 % Please edit documentation in R/Stacked_Barplot.R
 \name{Stacked_Barplot}
 \alias{Stacked_Barplot}
-\title{Interactive stacked Barplot}
+\title{Interactive Stacked Barplot}
 \usage{
 Stacked_Barplot(data, n = 10, m = 5, height = c(500, 300))
 }
 \arguments{
 \item{data}{A data.frame object that is to be analyzed}
 
-\item{n}{A numeric value indicating from what number of different values a variable is seen as categorical, all variables that have more different values than n are being treated as metric values}
+\item{n}{A numeric value indicating the limit from what number of different values a variable is seen as categorical variable, all variables that have more than n different values are being treated as metric values}
 
 \item{m}{A numeric value telling hiow many observations need to be in each cell to perform the approximative chi^2-Test, rather than the exact Fisher-Test(default at 5)}
 
 \item{height}{A two-dimensional numeric value indicating the height of the barplot and boxplot}
 }
 \description{
-Takes any data and creates an interactive stacked Barplot with multiple features.
+Takes any data and creates an stacked barplot with multiple interactive features.
 }
 \details{
-In the sidebar you can choose two categorical variables and plot a stacked Barplot, one bar for every level of the second categorical variable.
-If you click on one of the shown barplots, a boxplot conditioned onto that specifical level of categorical data will be shown underneath the barplot. You can also decide which
-metric variable should be plotted in the boxplot. With the frequency table of the two categorical variables ether a approximate chi^2 or exact fisher-test is computed.
-The test can be interpreted as to weather the hypothesis of homogeneity holds true or not. In case of a 2x2 frequency table the Odds Ratio value is given as well. What
-test is used depends on the observations in each cell, typically the count should be higher than 5 in each cell to perform the approximate test, but one can set
-this number when one is calling the function. If one cell in the frequency table has less observations than needed for the approximate test the fisher-test is performed.
-You can also change the grouping of factor levels of the second factorial variable.
-One click highlights a plot (the boxplot conditioned on that specific level will be shown as well) and once you double clicked on another bar, these two factorial levels will be melted into one.
-You can also look at the boxplot conditioned onto the new factor levels and if you want to go back to the original factor levels just press the 'back' button.
+In the sidebar you can choose two categorical variables and plot a stacked Barplot, each bar conditioned on the first categorical variable.
+If you click on one of the shown barplots, a boxplot conditioned onto that specifical level of the categorical variable will be shown underneath the barplot. You can also decide which
+metric variable should be plotted in the boxplot.
+
+ @details Eventually the staked barplot describes the frequency table of these two categorical variables. The independence of those variables can be testes ether with a approximate chi^2 test or a exact fisher-test.
+ Which test is used depends on the cell counts in the contigency table and the parameter \code{m}, only if at least one cell in the frequency table has less observations than \code{m} the exact fisher-test is performed.
+The test can be interpreted as to weather the hypothesis of independence holds true or not. In case of a 2x2 frequency table the Odds Ratio value is given as well.
+You can also interactively melt levels of the factorial variable together.
+In order to do this you at first need to select one level of the factorial variable by clicking on it with a single-click. The chosen boxplot will be highlighted. The other level that you want to melt together with the first one
+is identified by a double-click. Once you clicked on one level with a single-click and on one level with a double-click, those two levels are melted into one level. The
+labels on the x-axis are changed accordingly. You can always return to the older version of the factorial variable (with one more level than the current) by pressing the return button.
 }
 \examples{
 data=mtcars

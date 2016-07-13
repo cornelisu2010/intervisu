@@ -12,13 +12,13 @@
 #' @importFrom  scatterplot3d scatterplot3d
 #' @import car
 #' @import mgcv
-#' @importFrom DT datatable
+#' @importFrom "DT" "datatable"
 #' @import zoo
 #' @import splines
 #' @importFrom "tseries" "get.hist.quote"
 #' @importFrom "grDevices" "heat.colors"
 #' @importFrom "graphics" "abline" "barplot" "boxplot" "hist" "legend" "lines" "par" "plot" "plot.new" "plot.window" "points" "polygon" "stripchart" "text"
-#' @importFrom "stats" "chisq.test" "density" "fisher.test" "lm" "predict" "quantile" "resid" "stl" "time" "var"
+#' @importFrom "stats" "chisq.test" "density" "fisher.test" "lm" "predict" "quantile" "resid" "stl" "time" "var" "complete.cases"
 #' @importFrom "utils" "install.packages" "installed.packages"
 #' @importFrom hypergea getOddsRatio
 

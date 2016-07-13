@@ -1,10 +1,10 @@
 #' Single Variable Analysis of a metric variable
 #'
-#' With this application you can graphically view a single metric variable. From a given data-set you can plots boxplots, density-estimations and histograms with many interactive elements. If you
-#' want to reproduce the same graph you built in the app, you can get the code for the desired representation by clicking the 'Show R Code'-Button.
+#' With this application you can graphically analyse a single metric variable. From a given data-set you can plots boxplots, density-estimations and histograms, each with many interactive elements. If you
+#' want to reproduce the same graph you built in the app, you can always get the code for the desired representation by clicking the 'Show R Code'-Button.
 #'
-#' @param data A data.frame object that is to be analyzed (only metric variables will be shown)
-#' @param n A numeric value indicating from what number of different values a variable is seen as categorical variables, all variables that have more different values than n are being treated as metric values
+#' @param data A data.frame object that is to be analyzed (only metric variables will be used in this application)
+#' @param n A numeric value indicating the limit from what number of different values a variable is seen as categorical variable, all variables that have more than n different values are being treated as metric values
 #' @param width A numeric value indicating the width of the shown plot
 #' @param height A numeric value indicating the height of the shown plot
 #' @param a A numeric value indicating how much freedom the slider telling the boxplot what xlim values should be allowed should have
@@ -18,14 +18,19 @@
 #' @details Plotting a \strong{density estimator} also gives you many different possibilities. At first you can decide what metric variable should be plotted. You can also change the used kernel, the options are a gaussian, epanechnikov, triangular, rectangular, cosine and opt-cosine kernel.
 #' With two numeric inputs you can decide from what value to what value the slider input for the chosen bandwidth should be shown. You can also just plot only the observed
 #' values of a variable that lie within a given range (with a slider you can decide what values should be used).
-#' @details  The last graphical representation is a \strong{histogram} of the relative frequency. With a numeric input you can set the upper limit of the y-axis.
+#' @details  The last optional graphical representation is a \strong{histogram} of the relative frequency. With a numeric input you can set the upper limit of the y-axis.
 #' You can also change the origin of the histogram. The origin of a histogram is where the first block of the histogram starts, and to plot all optional values it can't be greater than
 #' the smallest observed value. The last interactive parameter is the used bandwidth in the plot, this is the absolute length of each single bars in the histogram.
 #' @export
 
 
 Metric_Single_Variable_Analysis = function(data, n=10,a=50,width=700, height=700) {
+  data=data[complete.cases(data),]
 
+  fraction_variable = function(variable,a=100) {
+    span= summary(variable)[6]-summary(variable)[1]
+    return(span/a)
+  }
   data=faktor2(data,n)[[1]]
   vec=faktor2(data,n)[[2]]
   if(sum(!vec)<1) {
