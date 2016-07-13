@@ -4,6 +4,7 @@ The functions are part of my bachelors thesis about interactive data visualistio
 
 Install the package with the following code.
 
+```R
 install.packages("devtools")
 
 library(devtools)
@@ -11,3 +12,4 @@ library(devtools)
 install_github("corneliusfritz/intervisu")
 
 library(intervisu)
+```
