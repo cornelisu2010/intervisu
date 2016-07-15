@@ -14,6 +14,7 @@
 #' @import mgcv
 #' @importFrom "DT" "datatable"
 #' @import zoo
+#' @importFrom plotly ggplotly plotly_empty layout plotlyOutput event_data renderPlotly as.widget
 #' @import splines
 #' @importFrom "tseries" "get.hist.quote"
 #' @importFrom "grDevices" "heat.colors"
@@ -21,6 +22,7 @@
 #' @importFrom "stats" "chisq.test" "density" "fisher.test" "lm" "predict" "quantile" "resid" "stl" "time" "var" "complete.cases"
 #' @importFrom "utils" "install.packages" "installed.packages"
 #' @importFrom hypergea getOddsRatio
+#' @import ggplot2
 
 Timeseries_Stat1 = function(height=c(800,400)) {
 
