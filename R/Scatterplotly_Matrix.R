@@ -27,7 +27,7 @@ Scatterplotly_Matrix= function(data, metr_data=F,width=c(400,700,400), height=c(
   theme_bw=function (base_size = 12, base_family = "") {
     theme_grey(base_size = base_size, base_family = base_family) %+replace%
       theme(axis.text = element_text(size = rel(0.8)), axis.ticks = element_line(colour = "black"),
-            legend.key = element_rect(colour = "black"),
+            legend.key = element_rect(colour = "black"),legend.position="none",
             panel.background = element_rect(fill = "white",colour = NA),
             panel.border = element_rect(fill = NA,colour = "black"),
             panel.grid.major = element_line(colour = "white",size = 0.2),
@@ -66,12 +66,16 @@ Scatterplotly_Matrix= function(data, metr_data=F,width=c(400,700,400), height=c(
       column(2, checkboxInput("regression", label = "Draw Regressionline", value = F)),
       column(2, checkboxInput("smooth", label = "Draw Loessline", value = F)),
       column(2, checkboxInput("data_show", label = "Show Data", value = F)),
+      column(2, conditionalPanel(
+        condition = "input.regression == true | input.smooth == true",
+        checkboxInput("group", label = "By Group", value = F)
+      )),
       column(4,if(metr_data){
-        dataTableOutput("metr")
+        DT::dataTableOutput("metr")
       })
     ),br(),br(),
     fluidRow(
-      column(10,offset = 1,dataTableOutput("dataset"))
+      column(10,offset = 1,DT::dataTableOutput("dataset"))
     )
   )
 
@@ -80,6 +84,7 @@ Scatterplotly_Matrix= function(data, metr_data=F,width=c(400,700,400), height=c(
     clicks  <- reactiveValues(
       click1=NULL, dblclick=NULL,key=NULL
     )
+
 
     observeEvent(input$click, {
       if(length(input$select)>=2){
@@ -94,17 +99,7 @@ Scatterplotly_Matrix= function(data, metr_data=F,width=c(400,700,400), height=c(
       }
     })
 
-    output$Plot <- renderPlot({
-      if(!is.null(input$select)){
-        data2=data[,input$select]
-      }
-      if(length(input$select)>1) {
-        group=list(group=rep(T,nrow(data2)))
-      }
-      data3=event_data("plotly_selected")
-      if(!is.null(data3)){
-        group$group[data3$key]=F
-      }
+    output$Plot <- renderPlot( {
 
       if(length(input$select)==0){
         plot.new()
@@ -114,24 +109,55 @@ Scatterplotly_Matrix= function(data, metr_data=F,width=c(400,700,400), height=c(
         plot.new()
         plot.window(xlim=c(0,1),ylim=c(0,2))
         text("Please choose at least \n two metric variables \n to be able to plot \n a scatterplot-matrix \n (one more needed) ",x = 0.5,y = 1.5,cex = 2)
+      }
 
-      }else if(length(input$select)>=2){
-        if(input$regression & input$smooth) {
-          if(is.null(input$click)){}
-          scatterplotMatrix(data2,pch=c(19,19),legend.plot = F,groups = !group$group,smoother=loessLine)
+      if(length(input$select)>1) {
+        data2=data[,input$select]
+        group=list(group=rep(T,nrow(data2)))
+        data3=event_data("plotly_selected")
+        if(!is.null(data3)){
+          group$group[data3$key]=F
         }
-        if(input$regression & !input$smooth) {
-          if(is.null(input$click)){}
-          scatterplotMatrix(data2,smoother = F,pch=c(19,19),legend.plot = F,groups = !group$group)
-        }
-        if(!input$regression &input$smooth) {
-          if(is.null(input$click)){}
-          scatterplotMatrix(data2,reg.line = F,pch=c(19,19),legend.plot = F,groups = !group$group,smoother=loessLine)
-        }
-        if(!input$regression & !input$smooth) {
-          if(is.null(input$click)){}
-          scatterplotMatrix(data2,smoother =F,reg.line = F,pch=c(19,19),legend.plot = F,groups = !group$group)
-        }
+      }
+
+      if(input$group) {
+        if(length(input$select)>=2){
+          if(input$regression & input$smooth) {
+            if(is.null(input$click)){}
+            scatterplotMatrix(data2,pch=c(19,19),legend.plot = F,groups = !group$group,smoother=loessLine,by.groups = T)
+          }
+          if(input$regression & !input$smooth) {
+            if(is.null(input$click)){}
+            scatterplotMatrix(data2,smoother = F,pch=c(19,19),legend.plot = F,groups = !group$group,by.groups = T)
+          }
+          if(!input$regression &input$smooth) {
+            if(is.null(input$click)){}
+            scatterplotMatrix(data2,reg.line = F,pch=c(19,19),legend.plot = F,groups = !group$group,smoother=loessLine,by.groups = T)
+          }
+          if(!input$regression & !input$smooth) {
+            if(is.null(input$click)){}
+            scatterplotMatrix(data2,smoother =F,reg.line = F,pch=c(19,19),legend.plot = F,groups = !group$group,by.groups = T)
+          } }
+        } else {
+          if(length(input$select)>=2){
+            if(input$regression & input$smooth) {
+              if(is.null(input$click)){}
+              scatterplotMatrix(data2,pch=c(19,19),legend.plot = F,groups = !group$group,smoother=loessLine)
+            }
+            if(input$regression & !input$smooth) {
+              if(is.null(input$click)){}
+              scatterplotMatrix(data2,smoother = F,pch=c(19,19),legend.plot = F,groups = !group$group)
+            }
+            if(!input$regression &input$smooth) {
+              if(is.null(input$click)){}
+              scatterplotMatrix(data2,reg.line = F,pch=c(19,19),legend.plot = F,groups = !group$group,smoother=loessLine)
+            }
+            if(!input$regression & !input$smooth) {
+              if(is.null(input$click)){}
+              scatterplotMatrix(data2,smoother =F,reg.line = F,pch=c(19,19),legend.plot = F,groups = !group$group)
+            }
+      }
+
 
        }
 
@@ -144,32 +170,41 @@ Scatterplotly_Matrix= function(data, metr_data=F,width=c(400,700,400), height=c(
       }
 
       if(length(input$select)>1) {
-        group=list(group=rep(T,nrow(data2)))
+        group=list(group=rep(F,nrow(data2)))
       }
       data3=event_data("plotly_selected")
-      if(!is.null(data3)){
-        group$group[data3$key]=F
+      if(!is.null(data3)& (length(input$select)>1)){
+        group$group[data3$key]=T
       }
 
       if(length(input$select)>1 & !is.null(clicks$dblclick)){
-        a=data2[,position(clicks$dblclick$x,clicks$dblclick$y,data[,input$select])[1]]
-        b=data2[,position(clicks$dblclick$x,clicks$dblclick$y,data[,input$select])[2]]
+        x=data2[,position(clicks$dblclick$x,clicks$dblclick$y,data[,input$select])[1]]
+        y=data2[,position(clicks$dblclick$x,clicks$dblclick$y,data[,input$select])[2]]
 
         data2$key=seq(1,nrow(data2))
-        p <- ggplot(data2, aes(x = a, y = b,key=data2$key, colour=group$group)) +
-          geom_point() +
+        p <- ggplot(data2, aes(x = x, y = y,key=data2$key, colour=group$group)) +
+          geom_point(size = 0.7) +
           scale_colour_manual(values=c("black","red")) +
-          labs(x=paste(names(data2)[position(clicks$dblclick$x,clicks$dblclick$y,data[,input$select])[1]]),
-               y=paste(names(data2)[position(clicks$dblclick$x,clicks$dblclick$y,data[,input$select])[2]]))+
+          guides(fill=F) +
           theme_bw() +
-          guides(fill=F)
-        if(input$smooth) {
-          p=p + stat_smooth()
+          labs(x=paste(names(data2)[position(clicks$dblclick$x,clicks$dblclick$y,data[,input$select])[1]]),
+               y=paste(names(data2)[position(clicks$dblclick$x,clicks$dblclick$y,data[,input$select])[2]]))
+        if(input$group) {
+          if(input$smooth) {
+            p=p + stat_smooth(se = FALSE,size = 0.4, fill=NA)
+          }
+          if(input$regression) {
+            p=p + stat_smooth(method=lm,se = FALSE,size = 0.4, fill=NA)
+          }
+        } else {
+          if(input$smooth) {
+            p=p + stat_smooth(se = FALSE,size = 0.4, fill=NA,colour="red")
+          }
+          if(input$regression) {
+            p=p + stat_smooth(method=lm,se = FALSE,size = 0.4, fill=NA, colour="green")
+          }
         }
-        if(input$regression) {
-          p=p + stat_smooth(method=lm)
-        }
-        ggplotly(p) %>%
+        ggplotly(p,tooltip = c("x","y")) %>%
           plotly::layout(dragmode = "select")
       } else {
         plotly_empty()
@@ -182,41 +217,51 @@ Scatterplotly_Matrix= function(data, metr_data=F,width=c(400,700,400), height=c(
       }
 
       if(length(input$select)>1) {
-        group=list(group=rep(T,nrow(data2)))
+        group=list(group=rep(F,nrow(data2)))
       }
       data3=event_data("plotly_selected")
-      if(!is.null(data3)){
-        group$group[data3$key]=F
+      if(!is.null(data3)&(length(input$select)>1)){
+        group$group[data3$key]=T
       }
 
       if(length(input$select)>1 & !is.null(clicks$click1)){
-        a=data2[,position(clicks$click1$x,clicks$click1$y,data[,input$select])[1]]
-        b=data2[,position(clicks$click1$x,clicks$click1$y,data[,input$select])[2]]
+        x=data2[,position(clicks$click1$x,clicks$click1$y,data[,input$select])[1]]
+        y=data2[,position(clicks$click1$x,clicks$click1$y,data[,input$select])[2]]
 
 
         data2$key=seq(1,nrow(data2))
-        p <- ggplot(data2, aes(x = a, y = b,key=data2$key, colour=group$group)) +
-          geom_point() +
+        p <- ggplot(data2, aes(x = x, y = y,key=data2$key, colour=group$group)) +
+          geom_point(size = 0.7) +
           scale_colour_manual(values=c("black","red")) +
           labs(x=paste(names(data2)[position(clicks$click1$x,clicks$click1$y,data[,input$select])[1]]),
                y=names(data2)[position(clicks$click1$x,clicks$click1$y,data[,input$select])[2]])+
           theme_bw() +
           guides(fill=F)
-        if(input$smooth) {
-          p=p + stat_smooth()
+        if(input$group) {
+          if(input$smooth) {
+            p=p + stat_smooth(se = FALSE,size = 0.4, fill=NA)
+          }
+          if(input$regression) {
+            p=p + stat_smooth(method=lm,se = FALSE,size = 0.4, fill=NA)
+          }
+        } else {
+          if(input$smooth) {
+            p=p + stat_smooth(se = FALSE,size = 0.4, fill=NA,colour="red")
+          }
+          if(input$regression) {
+            p=p + stat_smooth(method=lm,se = FALSE,size = 0.4, fill=NA, colour="green")
+          }
         }
-        if(input$regression) {
-          p=p + stat_smooth(method=lm)
-        }
+
         if(!is.null(p)) {
-          ggplotly(p) %>% plotly::layout(dragmode = "select")
+          ggplotly(p,tooltip = c("x","y")) %>% plotly::layout(dragmode = "select")
         }
       } else {
         plotly_empty()
       }
     })
 
-    output$metr <- renderDataTable({
+    output$metr <- DT::renderDataTable({
 
       level=list()
 
@@ -244,10 +289,19 @@ Scatterplotly_Matrix= function(data, metr_data=F,width=c(400,700,400), height=c(
       datatable(Ergebnis,options = list(dom = 't'))
     })
 
-    output$dataset= renderDataTable({
+    output$dataset= DT::renderDataTable({
+      if(length(input$select)>1) {
 
-      if(input$data_show) {
-        datatable(data[!group$group,])
+        data2=data[,input$select]
+        group=list(group=rep(F,nrow(data2)))
+        data3=event_data("plotly_selected")
+        if(!is.null(data3)){
+          group$group[data3$key]=T
+        }
+
+        if(input$data_show) {
+          DT::datatable(data[group$group,])
+        }
       }
 
     })

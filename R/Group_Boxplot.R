@@ -49,10 +49,10 @@ Group_Boxplot = function(data, n=10,width=600, height=600) {
 
     sidebarLayout(
       sidebarPanel(
-        radioButtons("check1", label = "Metric variable",
+        selectInput("check1", label = "Metric variable",
                      choices = choices1,
                      selected = 1),
-        radioButtons("check2", label = "Categorical variable",
+        selectInput("check2", label = "Categorical variable",
                      choices = choices2,
                      selected = 1),
         checkboxInput("checkbox", label = "Show global mean", value = F),

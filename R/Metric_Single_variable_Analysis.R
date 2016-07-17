@@ -145,7 +145,7 @@ Metric_Single_Variable_Analysis = function(data, n=10,a=50,width=700, height=700
 
     output$ui1 = renderUI({
 
-      a=sliderInput("dynamic1", "Use data From/To",
+      a=sliderInput("dynamic1", "Use Data From/To",
                   min = lim$min, max = lim$max, value = c(lim$min,lim$max))
       a$children[[2]]$attribs$`data-keyboard-step`=round(a$children[[2]]$attribs$`data-keyboard-step`,digits = 2)
       a$children[[2]]$attribs$`data-step`=as.character(round(as.numeric(a$children[[2]]$attribs$`data-step`),digits = 2))
@@ -155,7 +155,7 @@ Metric_Single_Variable_Analysis = function(data, n=10,a=50,width=700, height=700
 
     output$ui2 = renderUI({
 
-      a=sliderInput("dynamic2", "Plot data From/To",
+      a=sliderInput("dynamic2", "Plot Data From/To",
                     min = lim$min-fraction_variable(data[,names(data)[!vec][as.numeric(input$select1)]],a),
                     max = lim$max+fraction_variable(data[,names(data)[!vec][as.numeric(input$select1)]],a),
                     value = c(lim$min-fraction_variable(data[,names(data)[!vec][as.numeric(input$select1)]],a),lim$max+fraction_variable(data[,names(data)[!vec][as.numeric(input$select1)]],a)))
@@ -186,7 +186,7 @@ Metric_Single_Variable_Analysis = function(data, n=10,a=50,width=700, height=700
 
     output$ui4 = renderUI({
 
-      a=sliderInput("dynamic4", "Use data From/To",
+      a=sliderInput("dynamic4", "Use Data From/To",
                     min = lim$min, max = lim$max, value = c(lim$min,lim$max))
       a$children[[2]]$attribs$`data-keyboard-step`=round(a$children[[2]]$attribs$`data-keyboard-step`,digits = 2)
       a$children[[2]]$attribs$`data-step`=as.character(round(as.numeric(a$children[[2]]$attribs$`data-step`),digits = 2))
@@ -196,7 +196,7 @@ Metric_Single_Variable_Analysis = function(data, n=10,a=50,width=700, height=700
 
     output$ui5 = renderUI({
 
-      a=sliderInput("dynamic5", "Use data From/To",
+      a=sliderInput("dynamic5", "Use Data From/To",
                     min = lim$min, max = lim$max, value = c(lim$min,lim$max))
       a$children[[2]]$attribs$`data-keyboard-step`=round(a$children[[2]]$attribs$`data-keyboard-step`,digits = 2)
       a$children[[2]]$attribs$`data-step`=as.character(round(as.numeric(a$children[[2]]$attribs$`data-step`),digits = 2))

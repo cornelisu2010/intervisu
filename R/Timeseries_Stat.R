@@ -12,7 +12,7 @@
 #' @importFrom  scatterplot3d scatterplot3d
 #' @import car
 #' @import mgcv
-#' @importFrom "DT" "datatable"
+#' @importFrom DT datatable
 #' @import zoo
 #' @importFrom plotly ggplotly plotly_empty layout plotlyOutput event_data renderPlotly as.widget
 #' @import splines
