@@ -18,7 +18,7 @@
 #' @import dygraphs
 #' @import xts
 
-Timeseries_DG = function(data, height=200,width=1000,n=10) {
+Timeseries = function(data, height=200,width=1000,n=10) {
   data=data[complete.cases(data),]
 
   data=faktor2(data,n)[[1]]

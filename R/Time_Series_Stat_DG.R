@@ -4,23 +4,36 @@
 #' The user can chose out of a range of stocks and indicators from  on yahoo finance what data from what time (in years) should be downloaded as a time series.
 #' Then a Seasonal Decomposition of Time Series by Loess is performed on the given time series.
 #'
-#' @param height A two-dimensional numeric value indicating the height of the decomposition and the heigth of the zoom-graph
+#' @param height The height of all plots
+#' @param width The width of all plots
 #' @author Cornelius Fritz <cornelius.fritz@campus.lmu.de>
 #' @example demo/demo8.R
 #' @details If you brush over any part of the decomposition you see a zoom plot in the sidebar panel of the shaded area.
 #' @export
+#' @import shiny
+#' @importFrom  scatterplot3d scatterplot3d
+#' @import car
+#' @import mgcv
+#' @importFrom DT datatable
+#' @import zoo
+#' @importFrom plotly ggplotly plotly_empty layout plotlyOutput event_data renderPlotly as.widget
+#' @import splines
+#' @importFrom "tseries" "get.hist.quote"
+#' @importFrom "grDevices" "heat.colors"
+#' @importFrom "graphics" "abline" "barplot" "boxplot" "hist" "legend" "lines" "par" "plot" "plot.new" "plot.window" "points" "polygon" "stripchart" "text"
+#' @importFrom "stats" "chisq.test" "density" "fisher.test" "lm" "predict" "quantile" "resid" "stl" "time" "var" "complete.cases"
+#' @importFrom "utils" "install.packages" "installed.packages"
+#' @importFrom hypergea getOddsRatio
+#' @import ggplot2
+#' @import viridis
+#' @import tidyr
 #'
 
 
 
 
 
-Timeseries_DG_Stat = function(height=150,width=800,n=10) {
-  library(dygraphs)
-  library(tseries)
-  library(zoo)
-  library(xts)
-  library(shiny)
+Timeseries_Stat = function(height=150,width=800) {
 
   optindex=list()
   optindex$"Dax"=1

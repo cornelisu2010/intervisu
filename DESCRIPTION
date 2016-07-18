@@ -9,5 +9,5 @@ License: GPL-3
 LazyData: TRUE
 RoxygenNote: 5.0.1
 Depends:R (>= 3.0)
-Imports: shiny (>= 0.13.2),scatterplot3d (>= 0.3-36),car,mgcv,hypergea, zoo, splines ,tseries, utils, stats, threejs, xts, dygraphs, ggplot2, plotly, DT
+Imports: shiny (>= 0.13.2),scatterplot3d (>= 0.3-36),car,mgcv,hypergea, zoo, splines ,tseries, utils, stats, threejs, xts, dygraphs, ggplot2, plotly, DT, tidyr, viridis
 NeedsCompilation: yes
