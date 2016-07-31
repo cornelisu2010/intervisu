@@ -22,7 +22,7 @@
 
 
 
-Scatterplotly_Matrix= function(data, metr_data=F,width=c(400,700,400), height=c(500,700,500)) {
+Scatterplot_Matrix= function(data, metr_data=F,width=c(400,700,400), height=c(500,700,500)) {
 
   theme_bw=function (base_size = 12, base_family = "") {
     theme_grey(base_size = base_size, base_family = base_family) %+replace%

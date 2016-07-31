@@ -27,15 +27,11 @@ You can brush over any part of the decomposition zoom in on that specific area, 
 }
 \examples{
 
-date1=as.Date(paste0(2000,"-1-1"))
-date2=as.Date(paste0(2010,"-1-1"))
 if (interactive()) {
-  data=get.hist.quote(instrument= "BMW.DE",start = date1, end = date2 ,
-                      quote=c("Open", "High", "Low", "Close",
-                              "AdjClose","Volume"), provider = "yahoo",
-                      compression = "m",retclass="zoo",quiet = T)
+  data=tseries::get.hist.quote(start = as.Date("2000-01-01"),
+                               end = as.Date("2005-01-01"),provider = "yahoo",
+                               instrument = "^DJI",quiet = T)
   data=as.data.frame(data)
-
   Timeseries(data=data)
 }
 }

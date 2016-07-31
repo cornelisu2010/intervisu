@@ -66,7 +66,7 @@ Timeseries_Stat = function(height=150,width=800) {
         ),
         fluidRow(
           column(6,checkboxInput("robust",label = "Robust Fitting",value = F)),
-          column(6,checkboxInput("periodic",label = "Periodicity of the Loess window for the Seasional Component",value = T))
+          column(6,checkboxInput("periodic",label = "Cycle-Window",value = T))
         ),conditionalPanel(
           condition = "input.periodic == false",
           numericInput("num4", label = "Span of the loess window", value = 10)
