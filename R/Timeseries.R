@@ -17,10 +17,8 @@
 #' @export
 #' @import dygraphs
 #' @import xts
-
+#'
 Timeseries = function(data, height=200,width=1000,n=10) {
-  data=data[complete.cases(data),]
-
   data=faktor2(data,n)[[1]]
   vec=faktor2(data,n)[[2]]
   if(sum(!vec)<=1) {
@@ -37,9 +35,8 @@ Timeseries = function(data, height=200,width=1000,n=10) {
   freq_select=list()
   freq_select[[1]]="days"
   freq_select[[2]]="months"
-  freq_select[[3]]="years"
 
-  names(freq_select)=c("daily data", "monthly data","yearly data")
+  names(freq_select)=c("daily data", "monthly data")
 
   ui <- fluidPage(
     tags$div( HTML(
@@ -53,7 +50,7 @@ Timeseries = function(data, height=200,width=1000,n=10) {
                     selected = 1),
         fluidRow(
           column(6,dateInput("date1",label = "Beginning",value = "2010-01-02")),
-          column(6,dateInput("date2",label = "Ending",value = "2010-01-02"))
+          column(6,dateInput("date2",label = "Ending",value = "2012-01-02"))
         ),
         selectInput("freq", label = "Frequency",
                     choices = freq_select,
@@ -107,7 +104,7 @@ Timeseries = function(data, height=200,width=1000,n=10) {
     )
 
     freq=reactiveValues(
-      num3=NULL
+      num3=12
     )
 
     observeEvent(input$freq, {
@@ -115,97 +112,189 @@ Timeseries = function(data, height=200,width=1000,n=10) {
         freq$num3= 365
       } else if(input$freq == "months") {
         freq$num3=12
-      } else if(input$freq == "years") {
-        freq$num3=1
       }
     })
 
 
 
     observeEvent(input$num4, {
-      ts$ts=ts(data[,names(data)[as.numeric(input$select)]],frequency = freq$num3)
+      date3=as.Date(paste0(substr(as.character(input$date1),1,4),"-01-01"))
+      date4=as.Date(paste0(substr(as.character(input$date2),1,4),"-01-01"))
+      dif1=as.numeric(input$date1-date3+1)
+      dif2=as.numeric(input$date2-date4+1)
+      if(input$freq=="months") {
+        dif1=round(dif1/30,0)+1
+        dif2=round(dif1/30,0)+1
+      }
+      ts$ts=ts(data[,names(data)[as.numeric(input$select)]],start=c(as.numeric(substr(as.character(input$date1),1,4)),dif1),
+               end=c(as.numeric(substr(as.character(input$date2),1,4)),dif2),frequency = freq$num3)
+      ts$ts=na.approx(ts$ts)
       if(input$periodic) {
         if(input$robust) {
-          ts$stl=stl(na.approx(ts$ts),s.window = "periodic",robust = T)
+          ts$stl=stl(ts$ts,s.window = "periodic",robust = T)
         } else {
-          ts$stl=stl(na.approx(ts$ts),s.window = "periodic",robust = F)
+          ts$stl=stl(ts$ts,s.window = "periodic",robust = F)
         }
       } else {
         if(input$robust) {
-          ts$stl=stl(na.approx(ts$ts),s.window = input$num4,robust = T)
+          ts$stl=stl(ts$ts,s.window = input$num4,robust = T)
         } else {
-          ts$stl=stl(na.approx(ts$ts),s.window = input$num4,robust = F)
+          ts$stl=stl(ts$ts,s.window = input$num4,robust = F)
         }
       }
 
     })
 
     observeEvent(input$robust, {
-      ts$ts=ts(data[,names(data)[as.numeric(input$select)]],frequency = freq$num3)
+      date3=as.Date(paste0(substr(as.character(input$date1),1,4),"-01-01"))
+      date4=as.Date(paste0(substr(as.character(input$date2),1,4),"-01-01"))
+      dif1=as.numeric(input$date1-date3+1)
+      dif2=as.numeric(input$date2-date4+1)
+      if(input$freq=="months") {
+        dif1=round(dif1/30,0)+1
+        dif2=round(dif1/30,0)+1
+      }
+      ts$ts=ts(data[,names(data)[as.numeric(input$select)]],start=c(as.numeric(substr(as.character(input$date1),1,4)),dif1),
+               end=c(as.numeric(substr(as.character(input$date2),1,4)),dif2),frequency = freq$num3)
+      ts$ts=na.approx(ts$ts)
       if(input$periodic) {
         if(input$robust) {
-          ts$stl=stl(na.approx(ts$ts),s.window = "periodic",robust = T)
+          ts$stl=stl(ts$ts,s.window = "periodic",robust = T)
         } else {
-          ts$stl=stl(na.approx(ts$ts),s.window = "periodic",robust = F)
+          ts$stl=stl(ts$ts,s.window = "periodic",robust = F)
         }
       } else {
         if(input$robust) {
-          ts$stl=stl(na.approx(ts$ts),s.window = input$num4,robust = T)
+          ts$stl=stl(ts$ts,s.window = input$num4,robust = T)
         } else {
-          ts$stl=stl(na.approx(ts$ts),s.window = input$num4,robust = F)
+          ts$stl=stl(ts$ts,s.window = input$num4,robust = F)
+        }
+      }
+
+    })
+
+    observeEvent(input$date1, {
+      date3=as.Date(paste0(substr(as.character(input$date1),1,4),"-01-01"))
+      date4=as.Date(paste0(substr(as.character(input$date2),1,4),"-01-01"))
+      dif1=as.numeric(input$date1-date3+1)
+      dif2=as.numeric(input$date2-date4+1)
+      if(input$freq=="months") {
+        dif1=round(dif1/30,0)+1
+        dif2=round(dif1/30,0)+1
+      }
+      ts$ts=ts(data[,names(data)[as.numeric(input$select)]],start=c(as.numeric(substr(as.character(input$date1),1,4)),dif1),
+               end=c(as.numeric(substr(as.character(input$date2),1,4)),dif2),frequency = freq$num3)
+      ts$ts=na.approx(ts$ts)
+      if(input$periodic) {
+        if(input$robust) {
+          ts$stl=stl(ts$ts,s.window = "periodic",robust = T)
+        } else {
+          ts$stl=stl(ts$ts,s.window = "periodic",robust = F)
+        }
+      } else {
+        if(input$robust) {
+          ts$stl=stl(ts$ts,s.window = input$num4,robust = T)
+        } else {
+          ts$stl=stl(ts$ts,s.window = input$num4,robust = F)
+        }
+      }
+
+    })
+
+    observeEvent(input$date2, {
+      date3=as.Date(paste0(substr(as.character(input$date1),1,4),"-01-01"))
+      date4=as.Date(paste0(substr(as.character(input$date2),1,4),"-01-01"))
+      dif1=as.numeric(input$date1-date3+1)
+      dif2=as.numeric(input$date2-date4+1)
+      if(input$freq=="months") {
+        dif1=round(dif1/30,0)+1
+        dif2=round(dif1/30,0)+1
+      }
+      ts$ts=ts(data[,names(data)[as.numeric(input$select)]],start=c(as.numeric(substr(as.character(input$date1),1,4)),dif1),
+               end=c(as.numeric(substr(as.character(input$date2),1,4)),dif2),frequency = freq$num3)
+      ts$ts=na.approx(ts$ts)
+      if(input$periodic) {
+        if(input$robust) {
+          ts$stl=stl(ts$ts,s.window = "periodic",robust = T)
+        } else {
+          ts$stl=stl(ts$ts,s.window = "periodic",robust = F)
+        }
+      } else {
+        if(input$robust) {
+          ts$stl=stl(ts$ts,s.window = input$num4,robust = T)
+        } else {
+          ts$stl=stl(ts$ts,s.window = input$num4,robust = F)
         }
       }
 
     })
 
     observeEvent(input$periodic, {
-      ts$ts=ts(data[,names(data)[as.numeric(input$select)]],frequency = freq$num3)
+      date3=as.Date(paste0(substr(as.character(input$date1),1,4),"-01-01"))
+      date4=as.Date(paste0(substr(as.character(input$date2),1,4),"-01-01"))
+      dif1=as.numeric(input$date1-date3+1)
+      dif2=as.numeric(input$date2-date4+1)
+      if(input$freq=="months") {
+        dif1=round(dif1/30,0)+1
+        dif2=round(dif1/30,0)+1
+      }
+      ts$ts=ts(data[,names(data)[as.numeric(input$select)]],start=c(as.numeric(substr(as.character(input$date1),1,4)),dif1),
+               end=c(as.numeric(substr(as.character(input$date2),1,4)),dif2),frequency = freq$num3)
+      ts$ts=na.approx(ts$ts)
       if(input$periodic) {
         if(input$robust) {
-          ts$stl=stl(na.approx(ts$ts),s.window = "periodic",robust = T)
+          ts$stl=stl(ts$ts,s.window = "periodic",robust = T)
         } else {
-          ts$stl=stl(na.approx(ts$ts),s.window = "periodic",robust = F)
+          ts$stl=stl(ts$ts,s.window = "periodic",robust = F)
         }
       } else {
         if(input$robust) {
-          ts$stl=stl(na.approx(ts$ts),s.window = input$num4,robust = T)
+          ts$stl=stl(ts$ts,s.window = input$num4,robust = T)
         } else {
-          ts$stl=stl(na.approx(ts$ts),s.window = input$num4,robust = F)
+          ts$stl=stl(ts$ts,s.window = input$num4,robust = F)
         }
       }
-
     })
 
 
     observeEvent(input$select, {
-      ts$ts=ts(data[,names(data)[as.numeric(input$select)]],frequency = freq$num3)
+      date3=as.Date(paste0(substr(as.character(input$date1),1,4),"-01-01"))
+      date4=as.Date(paste0(substr(as.character(input$date2),1,4),"-01-01"))
+      dif1=as.numeric(input$date1-date3+1)
+      dif2=as.numeric(input$date2-date4+1)
+      if(input$freq=="months") {
+        dif1=round(dif1/30,0)+1
+        dif2=round(dif1/30,0)+1
+      }
+      ts$ts=ts(data[,names(data)[as.numeric(input$select)]],start=c(as.numeric(substr(as.character(input$date1),1,4)),dif1),
+               end=c(as.numeric(substr(as.character(input$date2),1,4)),dif2),frequency = freq$num3)
+      ts$ts=na.approx(ts$ts)
       if(input$periodic) {
         if(input$robust) {
-          ts$stl=stl(na.approx(ts$ts),s.window = "periodic",robust = T)
+          ts$stl=stl(ts$ts,s.window = "periodic",robust = T)
         } else {
-          ts$stl=stl(na.approx(ts$ts),s.window = "periodic",robust = F)
+          ts$stl=stl(ts$ts,s.window = "periodic",robust = F)
         }
       } else {
         if(input$robust) {
-          ts$stl=stl(na.approx(ts$ts),s.window = input$num4,robust = T)
+          ts$stl=stl(ts$ts,s.window = input$num4,robust = T)
         } else {
-          ts$stl=stl(na.approx(ts$ts),s.window = input$num4,robust = F)
+          ts$stl=stl(ts$ts,s.window = input$num4,robust = F)
         }
       }
+
 
     })
 
     output$plot1 <-  renderDygraph({
-      ts$ts=na.approx(ts$ts)
-      z1=zoo(x=ts$ts,seq(input$date1, input$date2, "days"),frequency = freq$num3)
+      z1=zoo(x=ts$ts,seq(input$date1, input$date2, input$freq),frequency = freq$num3)
       z1=as.xts(z1)
       names(z1)=names(data)[as.numeric(input$select)]
       dygraph(z1, main = "",ylab = "data")
     })
 
     output$plot2 <- renderDygraph({
-      ts$ts=na.approx(ts$ts)
-      z2=zoo(x=(ts$stl)$time.series[,1],seq(input$date1, input$date2, "days"),frequency = freq$num3)
+      z2=zoo(x=(ts$stl)$time.series[,1],seq(input$date1, input$date2, input$freq),frequency = freq$num3)
 
       z2=as.xts(z2)
       names(z2)=paste(names(data)[as.numeric(input$select)],"Seasonal")
@@ -214,18 +303,14 @@ Timeseries = function(data, height=200,width=1000,n=10) {
     })
 
     output$plot3 <- renderDygraph({
-      ts$ts=na.approx(ts$ts)
-      z2=zoo(x=(ts$stl)$time.series[,2],seq(input$date1, input$date2, "days"),frequency = freq$num3)
-
+      z2=zoo(x=(ts$stl)$time.series[,2],seq(input$date1, input$date2, input$freq),frequency = freq$num3)
       z2=as.xts(z2)
       names(z2)=paste(names(data)[as.numeric(input$select)],"Trend")
       dygraph(z2, main = "",ylab = "Trend")
-
     })
 
     output$plot4 <- renderDygraph({
-      ts$ts=na.approx(ts$ts)
-      z2=zoo(x=(ts$stl)$time.series[,3],seq(input$date1, input$date2, "days"),frequency = freq$num3)
+      z2=zoo(x=(ts$stl)$time.series[,3],seq(input$date1, input$date2, input$freq),frequency = freq$num3)
       z2=as.xts(z2)
       names(z2)=paste(names(data)[as.numeric(input$select)],"Unobserved")
       dygraph(z2, main = "",ylab = "Unobserved") %>%
