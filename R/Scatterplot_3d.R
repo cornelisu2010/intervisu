@@ -17,7 +17,18 @@
 #' @import threejs
 #'
 
-Scatterplot_3d = function(data,n,height=c(1500,500)) {
+Scatterplot_3d = function(data,n=10,height=c(1500,500)) {
+  theme_bw=function (base_size = 12, base_family = "") {
+    theme_grey(base_size = base_size, base_family = base_family) %+replace%
+      theme(axis.text = element_text(size = rel(0.8)), axis.ticks = element_line(colour = "black"),
+            legend.key = element_rect(colour = "black"),legend.position="none",
+            panel.background = element_rect(fill = "white",colour = NA),
+            panel.border = element_rect(fill = NA,colour = "black"),
+            panel.grid.major = element_line(colour = "white",size = 0.2),
+            panel.grid.minor = element_line(colour = "white",size = 0.5),
+            strip.background = element_rect(fill = "black",  colour = "black", size = 0.2))
+  }
+
   data=data[complete.cases(data),]
 
   data_cut= function(data, var,value, prob=0.15) {
@@ -86,10 +97,10 @@ Scatterplot_3d = function(data,n,height=c(1500,500)) {
           ))
         ),
         checkboxInput("checkbox2", label = "Condintion plot on a fourth variable", value = F),
-        plotOutput("plot2",height = height[2], click = "click3", brush = brushOpts(id = "brush"))
+        plotlyOutput("plot2",height = height[2])
       ),
       mainPanel(
-        scatterplotThreeOutput("plot1",width = 800,height = 800)
+        plotlyOutput("plot1",width = 800,height = 800)
       )
     )
   )
@@ -107,33 +118,17 @@ Scatterplot_3d = function(data,n,height=c(1500,500)) {
       a
     })
 
-    group  <- reactiveValues(
-      group=rep(T,nrow(data))
-    )
-
-    clicks  <- reactiveValues(
-      click3=NULL, brush=NULL
-    )
-
     data1 <- reactiveValues(
       data1=NULL
     )
 
-    observeEvent(input$click3, {
-      clicks$click3=list(x=input$click3$x,y=input$click3$y)
-    })
 
-    observeEvent(input$brush, {
-      clicks$brush=list(xmin=input$brush$xmin,xmax=input$brush$xmax,ymin=input$brush$ymin,ymax=input$brush$ymax)
-    })
+
+
 
     observeEvent(input$checkbox2, {
       if(!is.null(input$slider2)) {
         data1$data1=data_cut(data, var = data[,names(data)[as.numeric(input$check4)]], value = input$slider2)
-        group$group <- !((data1$data1[,names(data)[as.numeric(input$check1)]]<=clicks$brush$xmax)&
-                           (data1$data1[,names(data)[as.numeric(input$check1)]]>=clicks$brush$xmin)&
-                           (data1$data1[,names(data)[as.numeric(input$check2)]]>=clicks$brush$ymin)&
-                           (data1$data1[,names(data)[as.numeric(input$check2)]]<=clicks$brush$ymax))
       }
 
     })
@@ -141,60 +136,69 @@ Scatterplot_3d = function(data,n,height=c(1500,500)) {
     observeEvent(input$slider2, {
       if(!is.null(input$slider2)) {
         data1$data1=data_cut(data, var = data[,names(data)[as.numeric(input$check4)]], value = input$slider2)
-        group$group <- !((data1$data1[,names(data)[as.numeric(input$check1)]]<=clicks$brush$xmax)&
-                           (data1$data1[,names(data)[as.numeric(input$check1)]]>=clicks$brush$xmin)&
-                           (data1$data1[,names(data)[as.numeric(input$check2)]]>=clicks$brush$ymin)&
-                           (data1$data1[,names(data)[as.numeric(input$check2)]]<=clicks$brush$ymax))
       }
 
     }
     )
 
+    output$plot1 <- renderPlotly({
+
+      if(input$checkbox2) {
+
+        if(!is.null(input$slider2)) {
+          group=list(group=rep(F,nrow(data1$data1)))
+          data3=event_data("plotly_selected")
+          if(!is.null(data3)){
+            group$group[data3$key]=T
+          }
+          if(length(group$group)!=length(data1$data1[,names(data)[as.numeric(input$check1)]])) {
+            group=list(group=rep(F,nrow(data1$data1)))
+          }
+
+          x=data1$data1[,names(data)[as.numeric(input$check1)]]
+          y=data1$data1[,names(data)[as.numeric(input$check2)]]
+          z=data1$data1[,names(data)[as.numeric(input$check3)]]
+          obs=cbind(x,y,z)
+          # collect everything in a data-frame
+          df <- setNames(data.frame(obs), c(names(data)[as.numeric(input$check1)],names(data)[as.numeric(input$check2)],names(data)[as.numeric(input$check3)]))
+          color=array(dim = length(group$group),"black")
+          color[group$group]="red"
+          plot_ly(df, x = x, y = y, z = z, type = "scatter3d", mode = "markers", marker = list(size = 5,color=color)) %>%
+            layout(scene = list(xaxis = list(title = names(data)[as.numeric(input$check1)]),
+                                yaxis = list(title = names(data)[as.numeric(input$check2)]),
+                                zaxis = list(title = names(data)[as.numeric(input$check3)])), showlegend = FALSE)
 
 
 
-
-    observeEvent(input$click3, {
-      if(!is.null(input$brush)) {
-        if(input$checkbox2) {
-          group$group <- !((data1$data1[,names(data)[as.numeric(input$check1)]]<=clicks$brush$xmax)&
-                             (data1$data1[,names(data)[as.numeric(input$check1)]]>=clicks$brush$xmin)&
-                             (data1$data1[,names(data)[as.numeric(input$check2)]]>=clicks$brush$ymin)&
-                             (data1$data1[,names(data)[as.numeric(input$check2)]]<=clicks$brush$ymax))
         } else {
-          group$group <- !((data[,names(data)[as.numeric(input$check1)]]<=clicks$brush$xmax)&
-                             (data[,names(data)[as.numeric(input$check1)]]>=clicks$brush$xmin)&
-                             (data[,names(data)[as.numeric(input$check2)]]>=clicks$brush$ymin)&
-                             (data[,names(data)[as.numeric(input$check2)]]<=clicks$brush$ymax))
-        }
-
-      }
-    })
-    output$plot1 <- renderScatterplotThree({
-      if(input$checkbox2) {
-        if(!is.null(input$slider2)) {
-          a=scatterplot3js(x = data1$data1[,names(data)[as.numeric(input$check1)]],y =  data1$data1[,names(data)[as.numeric(input$check2)]],z = data1$data1[,names(data)[as.numeric(input$check3)]],
-                           size = 0.6,bg="white",axisLabels=c(paste(names(choices)[as.numeric(input$check1)]),paste(names(choices)[as.numeric(input$check3)]),paste(names(choices)[as.numeric(input$check2)])),color = "black",
-                           xlim=c(min(data[,names(data)[as.numeric(input$check1)]]), max(data[,names(data)[as.numeric(input$check1)]])),
-                           ylim=c(min(data[,names(data)[as.numeric(input$check2)]]), max(data[,names(data)[as.numeric(input$check2)]])),
-                           zlim=c(min(data[,names(data)[as.numeric(input$check3)]]), max(data[,names(data)[as.numeric(input$check3)]])),renderer="canvas",height = 1500,width = 1500,axis = F)
-
-
-
-          data2=data1$data1[!group$group,]
-          a$points3d(data2[,names(data)[as.numeric(input$check1)]], data2[,names(data)[as.numeric(input$check2)]],
-                     data2[,names(data)[as.numeric(input$check3)]],size = 0.6,col="red",stroke="red")
+          plotly_empty()
         }
       } else {
         if(!is.null(input$slider2)) {
-          a=scatterplot3js(x=data[,names(data)[as.numeric(input$check1)]], y=data[,names(data)[as.numeric(input$check2)]],z=data[,names(data)[as.numeric(input$check3)]],
-                           size = 0.6,bg="white",axisLabels=c(paste(names(choices)[as.numeric(input$check1)]),paste(names(choices)[as.numeric(input$check3)]),paste(names(choices)[as.numeric(input$check2)])),color = "black",
-                           xlim=c(min(data[,names(data)[as.numeric(input$check1)]]), max(data[,names(data)[as.numeric(input$check1)]])),
-                           ylim=c(min(data[,names(data)[as.numeric(input$check2)]]), max(data[,names(data)[as.numeric(input$check2)]])),
-                           zlim=c(min(data[,names(data)[as.numeric(input$check3)]]), max(data[,names(data)[as.numeric(input$check3)]])),renderer="canvas",height = 1000,width = 1000,axis = F)
-          data2=data[!group$group,]
-          a$points3d(data2[,names(data)[as.numeric(input$check1)]], data2[,names(data)[as.numeric(input$check2)]],
-                     data2[,names(data)[as.numeric(input$check3)]],col="red", size = 0.6,stroke="red")
+          data3=event_data("plotly_selected")
+          group=list(group=rep(F,nrow(data)))
+
+          if(!is.null(data3)){
+            group$group[data3$key]=T
+          }
+          if(length(group$group)!=length(data[,names(data)[as.numeric(input$check1)]])) {
+            group=list(group=rep(F,nrow(data)))
+          }
+
+          x=data[,names(data)[as.numeric(input$check1)]]
+          y=data[,names(data)[as.numeric(input$check2)]]
+          z=data[,names(data)[as.numeric(input$check3)]]
+          obs=cbind(x,y,z)
+          # collect everything in a data-frame
+          df <- setNames(data.frame(obs), c(names(data)[as.numeric(input$check1)],names(data)[as.numeric(input$check2)],names(data)[as.numeric(input$check3)]))
+          color=array(dim = length(group$group),"black")
+          color[group$group]="red"
+          plot_ly(df, x = x, y = y, z = z, type = "scatter3d", mode = "markers", marker = list(size = 5,color=color)) %>%
+            layout(scene = list(xaxis = list(title = names(data)[as.numeric(input$check1)]),
+                                yaxis = list(title = names(data)[as.numeric(input$check2)]),
+                                zaxis = list(title = names(data)[as.numeric(input$check3)])), showlegend = FALSE)
+        }else {
+          plotly_empty()
         }
       }
 
@@ -202,25 +206,76 @@ Scatterplot_3d = function(data,n,height=c(1500,500)) {
 
     })
 
-    output$plot2= renderPlot(height = height[2],{
+    output$plot2= renderPlotly({
       if(input$checkbox2) {
         if(!is.null(input$slider2)) {
-          plot(data1$data1[,names(data)[as.numeric(input$check1)]], data1$data1[,names(data)[as.numeric(input$check2)]],
-               pch=19,xlab=paste(names(data)[as.numeric(input$check1)]),
-               ylab=paste(names(data)[as.numeric(input$check2)]))
-          data2=data1$data1[!group$group,]
-          points(data2[,names(data)[as.numeric(input$check1)]], data2[,names(data)[as.numeric(input$check2)]],
-                 pch=19,col="red")
+
+          if(!is.null(data1$data1)) {
+            data4=data1$data1
+            group1=list(group=rep(F,nrow(data1$data1)))
+            data3=event_data("plotly_selected")
+            if(!is.null(data3)){
+              group1$group[data3$key]=T
+            }
+
+            x=data4[,names(data)[as.numeric(input$check1)]]
+            y=data4[,names(data)[as.numeric(input$check2)]]
+            data4$key=seq(1,nrow(data4))
+            if(length(group1$group)==length(x)) {
+              p <- ggplot(data4, aes(x = x, y = y,key=data4$key, colour=group1$group)) +
+                geom_point(size = 1.3) +
+                scale_colour_manual(values=c("black","red")) +
+                guides(fill=F) +
+                theme_bw() +
+                labs(x=paste(names(data)[as.numeric(input$check1)]),
+                     y=paste(names(data)[as.numeric(input$check2)]))
+            } else {
+              p <- ggplot(data4, aes(x = x, y = y,key=data4$key)) +
+                geom_point(size = 1.3) +
+                scale_colour_manual(values=c("black","red")) +
+                guides(fill=F) +
+                theme_bw() +
+                labs(x=paste(names(data)[as.numeric(input$check1)]),
+                     y=paste(names(data)[as.numeric(input$check2)]))
+            }
+
+            ggplotly(p,tooltip = c("x","y")) %>%
+              plotly::layout(dragmode = "select")
+
+
+          }
+
+        } else {
+          plotly_empty()
+        }
+      } else if (!input$checkbox2){
+        if(!is.null(input$slider2)) {
+          group=list(group=rep(F,nrow(data)))
+          data3=event_data("plotly_selected")
+          if(!is.null(data3)){
+            group$group[data3$key]=T
+          }
+
+          x=data[,names(data)[as.numeric(input$check1)]]
+          y=data[,names(data)[as.numeric(input$check2)]]
+          data$key=seq(1,nrow(data))
+          p <- ggplot(data, aes(x = x, y = y,key=data$key, colour=group$group)) +
+            geom_point(size = 1.3) +
+            scale_colour_manual(values=c("black","red")) +
+            guides(fill=F) +
+            theme_bw() +
+            labs(x=paste(names(data)[as.numeric(input$check1)]),
+                 y=paste(names(data)[as.numeric(input$check2)]))
+          ggplotly(p,tooltip = c("x","y")) %>%
+            plotly::layout(dragmode = "select")
+
+
+
+        } else {
+          plotly_empty()
         }
       } else {
-        if(!is.null(input$slider2)) {
-          plot(x=data[,names(data)[as.numeric(input$check1)]],y= data[,names(data)[as.numeric(input$check2)]],
-               pch=19,xlab=paste(names(data)[as.numeric(input$check1)]),
-               ylab=paste(names(data)[as.numeric(input$check2)]))
-          data2=data[!group$group,]
-          points(data2[,names(data)[as.numeric(input$check1)]], data2[,names(data)[as.numeric(input$check2)]],
-                 col="red",pch=19)
-        }
+        plotly_empty()
       }
     })
   }
