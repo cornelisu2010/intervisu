@@ -163,10 +163,7 @@ Scatterplot_3d = function(data,n=10,height=c(1500,500)) {
           df <- setNames(data.frame(obs), c(names(data)[as.numeric(input$check1)],names(data)[as.numeric(input$check2)],names(data)[as.numeric(input$check3)]))
           color=array(dim = length(group$group),"black")
           color[group$group]="red"
-          text = paste(names(data)[as.numeric(input$check1)],":", data1$data1[,names(data)[as.numeric(input$check1)]],"<br>",names(data)[as.numeric(input$check2)],":", data1$data1[,names(data)[as.numeric(input$check2)]],
-                       "<br>",names(data)[as.numeric(input$check3)],":", data1$data1[,names(data)[as.numeric(input$check3)]])
-
-          plot_ly(df, x = x, y = y, z = z, type = "scatter3d", mode = "markers", marker = list(size = 5,color=color),text = text,hoverinfo="text") %>%
+          plotly::plot_ly(df, x = x, y = y, z = z, type = "scatter3d", mode = "markers", marker = list(size = 5,color=color)) %>%
             layout(scene = list(xaxis = list(title = names(data)[as.numeric(input$check1)]),
                                 yaxis = list(title = names(data)[as.numeric(input$check2)]),
                                 zaxis = list(title = names(data)[as.numeric(input$check3)])), showlegend = FALSE)
@@ -174,7 +171,7 @@ Scatterplot_3d = function(data,n=10,height=c(1500,500)) {
 
 
         } else {
-          plotly_empty()
+          plotly::plotly_empty()
         }
       } else {
         if(!is.null(input$slider2)) {
@@ -196,14 +193,12 @@ Scatterplot_3d = function(data,n=10,height=c(1500,500)) {
           df <- setNames(data.frame(obs), c(names(data)[as.numeric(input$check1)],names(data)[as.numeric(input$check2)],names(data)[as.numeric(input$check3)]))
           color=array(dim = length(group$group),"black")
           color[group$group]="red"
-          text = paste(names(data)[as.numeric(input$check1)],":", data[,names(data)[as.numeric(input$check1)]],"<br>",names(data)[as.numeric(input$check2)],":", data[,names(data)[as.numeric(input$check2)]],
-                       "<br>",names(data)[as.numeric(input$check3)],":", data[,names(data)[as.numeric(input$check3)]])
-          plot_ly(df, x = x, y = y, z = z, type = "scatter3d", mode = "markers", marker = list(size = 5,color=color),text = text,hoverinfo="text") %>%
+          plotly::plot_ly(df, x = x, y = y, z = z, type = "scatter3d", mode = "markers", marker = list(size = 5,color=color)) %>%
             layout(scene = list(xaxis = list(title = names(data)[as.numeric(input$check1)]),
                                 yaxis = list(title = names(data)[as.numeric(input$check2)]),
                                 zaxis = list(title = names(data)[as.numeric(input$check3)])), showlegend = FALSE)
         }else {
-          plotly_empty()
+          plotly::plotly_empty()
         }
       }
 
