@@ -97,10 +97,10 @@ Scatterplot_3d = function(data,n=10,height=c(1500,500)) {
           ))
         ),
         checkboxInput("checkbox2", label = "Condintion plot on a fourth variable", value = F),
-        plotlyOutput("plot2",height = height[2])
+        plotly::plotlyOutput("plot2",height = height[2])
       ),
       mainPanel(
-        plotlyOutput("plot1",width = 800,height = 800)
+        plotly::plotlyOutput("plot1",width = height[1],height = height[1])
       )
     )
   )
@@ -160,7 +160,7 @@ Scatterplot_3d = function(data,n=10,height=c(1500,500)) {
           z=data1$data1[,names(data)[as.numeric(input$check3)]]
           obs=cbind(x,y,z)
           # collect everything in a data-frame
-          df <- setNames(data.frame(obs), c(names(data)[as.numeric(input$check1)],names(data)[as.numeric(input$check2)],names(data)[as.numeric(input$check3)]))
+          df <- stats::setNames(data.frame(obs), c(names(data)[as.numeric(input$check1)],names(data)[as.numeric(input$check2)],names(data)[as.numeric(input$check3)]))
           color=array(dim = length(group$group),"black")
           color[group$group]="red"
           text = paste(names(data)[as.numeric(input$check1)],":", data1$data1[,names(data)[as.numeric(input$check1)]],"<br>",names(data)[as.numeric(input$check2)],":", data1$data1[,names(data)[as.numeric(input$check2)]],
