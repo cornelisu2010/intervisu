@@ -182,7 +182,10 @@ Scatterplot_Matrix= function(data, metr_data=F,width=c(400,700,400), height=c(50
         y=data2[,position(clicks$dblclick$x,clicks$dblclick$y,data[,input$select])[2]]
 
         data2$key=seq(1,nrow(data2))
-        p <- ggplot(data2, aes(x = x, y = y,key=data2$key, colour=group$group)) +
+        text = paste(names(data2)[position(clicks$dblclick$x,clicks$dblclick$y,data[,input$select])[1]],":", data2[,position(clicks$dblclick$x,clicks$dblclick$y,data[,input$select])[1]],"<br>",
+                     names(data2)[position(clicks$dblclick$x,clicks$dblclick$y,data[,input$select])[2]],":", data2[,position(clicks$dblclick$x,clicks$dblclick$y,data[,input$select])[2]])
+
+        p <- ggplot(data2, aes(x = x, y = y,key=data2$key, colour=group$group, text = text)) +
           geom_point(size = 0.7) +
           scale_colour_manual(values=c("black","red")) +
           guides(fill=F) +
@@ -204,7 +207,8 @@ Scatterplot_Matrix= function(data, metr_data=F,width=c(400,700,400), height=c(50
             p=p + stat_smooth(method=lm,se = FALSE,size = 0.4, fill=NA, colour="green")
           }
         }
-        ggplotly(p,tooltip = c("x","y")) %>%
+
+        ggplotly(p,tooltip = c("text")) %>%
           plotly::layout(dragmode = "select")
       } else {
         plotly_empty()
@@ -227,10 +231,12 @@ Scatterplot_Matrix= function(data, metr_data=F,width=c(400,700,400), height=c(50
       if(length(input$select)>1 & !is.null(clicks$click1)){
         x=data2[,position(clicks$click1$x,clicks$click1$y,data[,input$select])[1]]
         y=data2[,position(clicks$click1$x,clicks$click1$y,data[,input$select])[2]]
+        text = paste(names(data2)[position(clicks$click1$x,clicks$click1$y,data[,input$select])[1]],":", data2[,position(clicks$click1$x,clicks$click1$y,data[,input$select])[1]],"<br>",
+                     names(data2)[position(clicks$click1$x,clicks$click1$y,data[,input$select])[2]],":", data2[,position(clicks$click1$x,clicks$click1$y,data[,input$select])[2]])
 
 
         data2$key=seq(1,nrow(data2))
-        p <- ggplot(data2, aes(x = x, y = y,key=data2$key, colour=group$group)) +
+        p <- ggplot(data2, aes(x = x, y = y,key=data2$key, colour=group$group,text=text)) +
           geom_point(size = 0.7) +
           scale_colour_manual(values=c("black","red")) +
           labs(x=paste(names(data2)[position(clicks$click1$x,clicks$click1$y,data[,input$select])[1]]),
@@ -254,7 +260,7 @@ Scatterplot_Matrix= function(data, metr_data=F,width=c(400,700,400), height=c(50
         }
 
         if(!is.null(p)) {
-          ggplotly(p,tooltip = c("x","y")) %>% plotly::layout(dragmode = "select")
+          ggplotly(p,tooltip = c("text")) %>% plotly::layout(dragmode = "select")
         }
       } else {
         plotly_empty()
