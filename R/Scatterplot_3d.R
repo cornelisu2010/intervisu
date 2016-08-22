@@ -227,8 +227,11 @@ Scatterplot_3d = function(data,n=10,height=c(1500,500)) {
             x=data4[,names(data)[as.numeric(input$check1)]]
             y=data4[,names(data)[as.numeric(input$check2)]]
             data4$key=seq(1,nrow(data4))
+            text = paste(names(data)[as.numeric(input$check1)],":", data4[,names(data)[as.numeric(input$check1)]],"<br>",
+                         names(data)[as.numeric(input$check2)],":", data4[,names(data)[as.numeric(input$check2)]])
+
             if(length(group1$group)==length(x)) {
-              p <- ggplot(data4, aes(x = x, y = y,key=data4$key, colour=group1$group)) +
+              p <- ggplot(data4, aes(x = x, y = y,key=data4$key, colour=group1$group, text = text)) +
                 geom_point(size = 1.3) +
                 scale_colour_manual(values=c("black","red")) +
                 guides(fill=F) +
@@ -245,7 +248,7 @@ Scatterplot_3d = function(data,n=10,height=c(1500,500)) {
                      y=paste(names(data)[as.numeric(input$check2)]))
             }
 
-            ggplotly(p,tooltip = c("x","y")) %>%
+            ggplotly(p,tooltip = c("text")) %>%
               plotly::layout(dragmode = "select")
 
 
@@ -265,14 +268,16 @@ Scatterplot_3d = function(data,n=10,height=c(1500,500)) {
           x=data[,names(data)[as.numeric(input$check1)]]
           y=data[,names(data)[as.numeric(input$check2)]]
           data$key=seq(1,nrow(data))
-          p <- ggplot(data, aes(x = x, y = y,key=data$key, colour=group$group)) +
+          text = paste(names(data)[as.numeric(input$check1)],":", data[,names(data)[as.numeric(input$check1)]],"<br>",
+                       names(data)[as.numeric(input$check2)],":", data[,names(data)[as.numeric(input$check2)]])
+          p <- ggplot(data, aes(x = x, y = y,key=data$key, colour=group$group, text=text)) +
             geom_point(size = 1.3) +
             scale_colour_manual(values=c("black","red")) +
             guides(fill=F) +
             theme_bw() +
             labs(x=paste(names(data)[as.numeric(input$check1)]),
                  y=paste(names(data)[as.numeric(input$check2)]))
-          ggplotly(p,tooltip = c("x","y")) %>%
+          ggplotly(p,tooltip = c("text")) %>%
             plotly::layout(dragmode = "select")
 
 
