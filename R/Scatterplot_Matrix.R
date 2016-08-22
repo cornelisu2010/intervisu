@@ -194,17 +194,17 @@ Scatterplot_Matrix= function(data, metr_data=F,width=c(400,700,400), height=c(50
                y=paste(names(data2)[position(clicks$dblclick$x,clicks$dblclick$y,data[,input$select])[2]]))
         if(input$group) {
           if(input$smooth) {
-            p=p + stat_smooth(se = FALSE,size = 0.4, fill=NA)
+            p=p + stat_smooth(aes(text=NULL),se = FALSE,size = 0.4, fill=NA,span = 0.5, method.args = list(family="symmetric", method="loess"))
           }
           if(input$regression) {
-            p=p + stat_smooth(method=lm,se = FALSE,size = 0.4, fill=NA)
+            p=p + stat_smooth(aes(text=NULL),method=lm,se = FALSE,size = 0.4, fill=NA)
           }
         } else {
           if(input$smooth) {
-            p=p + stat_smooth(se = FALSE,size = 0.4, fill=NA,colour="red")
+            p=p + stat_smooth(aes(text=NULL),se = FALSE,size = 0.4, fill=NA,colour="red",span = 0.5, method.args = list(family="symmetric", method="loess"))
           }
           if(input$regression) {
-            p=p + stat_smooth(method=lm,se = FALSE,size = 0.4, fill=NA, colour="green")
+            p=p + stat_smooth(aes(text=NULL),method=lm,se = FALSE,size = 0.4, fill=NA, colour="green")
           }
         }
 
@@ -245,17 +245,17 @@ Scatterplot_Matrix= function(data, metr_data=F,width=c(400,700,400), height=c(50
           guides(fill=F)
         if(input$group) {
           if(input$smooth) {
-            p=p + stat_smooth(se = FALSE,size = 0.4, fill=NA)
+            p=p + stat_smooth(aes(text=NULL),se = FALSE,size = 0.4, fill=NA,span = 0.5, method.args = list(family="symmetric", method="loess"))
           }
           if(input$regression) {
-            p=p + stat_smooth(method=lm,se = FALSE,size = 0.4, fill=NA)
+            p=p + stat_smooth(aes(text=NULL),method=lm,se = FALSE,size = 0.4, fill=NA)
           }
         } else {
           if(input$smooth) {
-            p=p + stat_smooth(se = FALSE,size = 0.4, fill=NA,colour="red")
+            p=p + stat_smooth(aes(text=NULL),se = FALSE,size = 0.4, fill=NA,colour="red",span = 0.5, method.args = list(family="symmetric", method="loess"))
           }
           if(input$regression) {
-            p=p + stat_smooth(method=lm,se = FALSE,size = 0.4, fill=NA, colour="green")
+            p=p + stat_smooth(aes(text=NULL),method=lm,se = FALSE,size = 0.4, fill=NA, colour="green")
           }
         }
 
