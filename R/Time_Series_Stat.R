@@ -44,8 +44,8 @@ Timeseries_Stat = function(height=150,width=800) {
   quite_list$"Open"="Open"
   quite_list$"Low"="Low"
   quite_list$"High"="High"
+  quite_list$"Close"="Close"
   quite_list$"Adjusted Close"="AdjClose"
-  quite_list$"Volume"="Volume"
 
 
 
