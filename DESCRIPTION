@@ -1,7 +1,7 @@
 Package: intervisu
 Type: Package
 Title: Interactive data visualisation with shiny
-Version: 0.1.0
+Version: 0.1.1
 Author: Cornelius Fritz
 Maintainer: Cornelius Fritz <cornelius.fritz@campus.lmu.de>
 Description: This package supplies functions generating shiny applications with your own data for explorative descriptive data analysis.
