@@ -174,7 +174,7 @@ Scatterplot_3d = function(data,n=10,height=c(1500,500)) {
 
 
         } else {
-          plotly::plotly_empty()
+          plotly::plotly_empty(type="area")
         }
       } else {
         if(!is.null(input$slider2)) {
@@ -204,7 +204,7 @@ Scatterplot_3d = function(data,n=10,height=c(1500,500)) {
                                 yaxis = list(title = names(data)[as.numeric(input$check2)]),
                                 zaxis = list(title = names(data)[as.numeric(input$check3)])), showlegend = FALSE)
         }else {
-          plotly::plotly_empty()
+          plotly::plotly_empty(type="area")
         }
       }
 
@@ -255,7 +255,7 @@ Scatterplot_3d = function(data,n=10,height=c(1500,500)) {
           }
 
         } else {
-          plotly_empty()
+          plotly_empty(type="area")
         }
       } else if (!input$checkbox2){
         if(!is.null(input$slider2)) {
@@ -283,10 +283,10 @@ Scatterplot_3d = function(data,n=10,height=c(1500,500)) {
 
 
         } else {
-          plotly_empty()
+          plotly_empty(type="area")
         }
       } else {
-        plotly_empty()
+        plotly_empty(type="area")
       }
     })
   }

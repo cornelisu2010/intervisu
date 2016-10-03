@@ -211,7 +211,7 @@ Scatterplot_Matrix= function(data, metr_data=F,width=c(400,700,400), height=c(50
         ggplotly(p,tooltip = c("text")) %>%
           plotly::layout(dragmode = "select")
       } else {
-        plotly_empty()
+        plotly_empty(type="area")
       }
     })
 
@@ -263,7 +263,7 @@ Scatterplot_Matrix= function(data, metr_data=F,width=c(400,700,400), height=c(50
           ggplotly(p,tooltip = c("text")) %>% plotly::layout(dragmode = "select")
         }
       } else {
-        plotly_empty()
+        plotly_empty(type="area")
       }
     })
 
