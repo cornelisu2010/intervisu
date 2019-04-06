@@ -15,4 +15,3 @@ This function turns all factorial variables in a dataset into metric variables a
 \author{
 Cornelius Fritz <cornelius.fritz@campus.lmu.de>
 }
-

@@ -15,4 +15,3 @@ This function tells you what variables of a given dataset are factorial variable
 \author{
 Cornelius Fritz <cornelius.fritz@campus.lmu.de>
 }
-

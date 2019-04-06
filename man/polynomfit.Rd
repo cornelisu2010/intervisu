@@ -22,4 +22,3 @@ The output also features a prediction of the dependent variable in the interval 
 \author{
 Cornelius Fritz <cornelius.fritz@campus.lmu.de>
 }
-

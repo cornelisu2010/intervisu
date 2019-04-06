@@ -46,4 +46,3 @@ if (interactive()) {
 \author{
 Cornelius Fritz <cornelius.fritz@campus.lmu.de>
 }
-

@@ -17,4 +17,3 @@ This function factorizes a variables with more than n different values.
 \author{
 Cornelius Fritz <cornelius.fritz@campus.lmu.de>
 }
-

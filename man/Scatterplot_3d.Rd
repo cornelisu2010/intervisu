@@ -4,7 +4,7 @@
 \alias{Scatterplot_3d}
 \title{Interactive three-dimensional scatterlpot}
 \usage{
-Scatterplot_3d(data, n, height = c(1500, 500))
+Scatterplot_3d(data, n = 10, height = c(1500, 500))
 }
 \arguments{
 \item{data}{A data.frame object that is to be analyzed (only metric variables are shown)}
@@ -33,4 +33,3 @@ if (interactive()) {
 \author{
 Cornelius Fritz <cornelius.fritz@campus.lmu.de>
 }
-

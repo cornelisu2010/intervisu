@@ -19,4 +19,3 @@ This function melts two factor levels into one factor level.
 \author{
 Cornelius Fritz <cornelius.fritz@campus.lmu.de>
 }
-

@@ -15,4 +15,3 @@ This function checks if a numeric vector only includes whole numbers
 \author{
 Cornelius Fritz <cornelius.fritz@campus.lmu.de>
 }
-

@@ -16,4 +16,3 @@ installed packages will be installed and loaded.
 \author{
 Cornelius Fritz <cornelius.fritz@campus.lmu.de>
 }
-
